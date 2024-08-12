@@ -1,0 +1,711 @@
+<html><head><title>Azure 기반설계</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-default_background {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 237, 214, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(0, 0, 0, 0.06); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(249, 228, 188, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body class="pdf ko-KR" lang="ko-KR"><article id="1083c578-a899-492e-b182-ca49f9619fb4" class="page sans"><header><h1 class="page-title">Azure 기반설계</h1><p class="page-description"></p></header><div class="page-body"><p id="f829aef5-fd15-41fa-a1f4-09bfb3367db1" class="">
+</p><p id="bd95f67a-b27b-407a-b0b0-d280f9e29f94" class="">
+</p><p id="62b24577-7568-4409-8619-b5ff69234138" class="">
+</p><p id="3aae371f-682d-47c6-9e1a-05d74f4a594b" class="">VM</p><p id="4733ee03-b2e4-40d1-97bf-b1a9ad334118" class="">BLOB</p><p id="3c1793fd-4900-498d-bd35-b42cbe62cfb4" class="">DataFactory</p><p id="2dc33883-7e3b-40fc-ad55-7d4f310c2157" class="">DataFlow</p><p id="b4dc94e8-4d6f-4579-9da8-1e3c9ac755df" class="">DataBricks     Catalogue Unit</p><p id="57deabb0-7e80-4efa-a09e-bd1a4250ba92" class="">Purview</p><p id="f376d1e3-060a-4162-af7c-343b32f25efb" class="">Power BI</p><p id="b4490951-c7ab-44a1-a34f-b1eb22402557" class="">
+</p><p id="725eeeaa-cd86-422d-8701-fd1e1d1051bf" class="">
+</p><h2 id="ee3858c7-8fc0-447d-9423-d274fab3f4d5" class=""><strong>설계 고려 핵심 요소</strong></h2><p id="74c41ab5-aa5f-4f92-88fa-ca5347be44d3" class=""><br/><br/><strong>안정성<br/><br/></strong>워크로드가 대규모로 중복성 및 복원력을 구축하여 가동 시간 및 복구 목표를 충족하는지 확인합니다.</p><ol type="1" id="94b5069e-6e51-4943-8f1c-ec2793d9b0f2" class="numbered-list" start="1"><li>Load Balancing<br/>서버에 가해지는 부하 (=로드) 를 분산 (= 밸런싱) 해주는 기술<br/><br/></li></ol><ol type="1" id="bd1476b2-0aec-4d27-81dc-3b012fd06adc" class="numbered-list" start="2"><li>Data Scalability<br/><br/></li></ol><ol type="1" id="09adf48c-e945-4366-b6d4-aa7238a6e984" class="numbered-list" start="3"><li>Backup and Recovery<br/>복구 전략과 관련된 요소<br/>• 복구 지점 목표(RPO) : 허용 가능한 데이터 손실의 최대 기간. 시간 단위로 측정. ex. 4시간 동안의 데이터<br/>• 복구 시간 목표(RTO) : 허용되는 최대 가동 중지 시간<br/></li></ol><ol type="1" id="0cac2590-82b6-4214-9838-3656818a5167" class="numbered-list" start="4"><li>Geographical Diversity  : LRS, ZRS, GRS, GRS-RA</li></ol><p id="6e2790a7-c073-4b84-8687-84fbd032cebb" class="">
+</p><p id="757e70a8-997c-44c2-94cc-44f13002d459" class="">고가용성 ( High Availability )<br/>• 서버와 네트워크, 프로그램 등의 정보 시스템이 상당히 오랜 기간 동안 지속적으로 정상 운영이 가능한 성질<br/></p><p id="9e46bc66-e5b1-4b64-afd7-4415916111c1" class=""><br/>오류 복구 ( Recovery )<br/></p><ul id="5c1ceddc-6c80-4070-831b-787695113704" class="bulleted-list"><li style="list-style-type:disc">데이터 손실 및 대규모 재해 복구에 중점을 둠<br/>• 클라우드 환경에서는 자동화된 복구 단계를 통해 복구에 소요되는 시간을 줄일 수 있음<br/>• 클라우드 API의 본질: 사람의 판단과 수작업을 대체 ( 자동화, 효율화 )<br/></li></ul><p id="e65174cd-3830-479b-a235-aedf4864ac5d" class="">
+</p><p id="662ac2b6-184b-4612-96d1-7149db192f26" class="">Active/Passive Cluster<br/>대기 노드가 존재<br/>• 노드 손실이 발생할 때 해당 위치의 다른 노드에 의해 빠르게 상쇄되도록 함<br/></p><p id="342ba675-914e-4124-b19c-4bb957590206" class="">
+</p><p id="b2bb93e0-913d-4ec0-8e04-496eeb807bc6" class="">Active/Active Cluster</p><ul id="7ff7698a-0b71-40a3-95a4-aa94c9ab0e99" class="bulleted-list"><li style="list-style-type:disc">동일한 노드가 두 개 이상 있으며 각 노드는 클라이언트가 직접 액세스<br/>• 한 노드가 실패하면 클라이언트가 자동으로 다른 노드에 연결<br/>• 첫 번째 노드를 복원하거나 교체 한 후 클라이언트가 다시 두 개의 원래 노드로 분할<br/></li></ul><p id="64ee571d-0b01-4107-af20-d8e66054835f" class="">
+</p><p id="d629895d-8e40-4066-9dc4-de2d5bba24bb" class="">RAID ( Redundant Array of Inexpensive Disks )<br/>• 스토리지의 고가용성<br/></p><p id="a89dbabc-fce1-44b1-9828-0f0479546b90" class="">
+</p><p id="12cd0865-36e0-4642-ad8e-69d2ca68912e" class="">
+</p><p id="388d5d05-7347-4381-972e-a302ed72ed4b" class=""><strong>보안 Security</strong><br/>기밀성 및 데이터 무결성을 유지하여 공격으로부터 워크로드를 보호합니다.<br/></p><p id="2aae5619-8503-413a-9a23-701bc21a33b6" class="">조직에서 사용, 저장 및 전송하는 데이터를 보호하는 것</p><p id="e3306158-03de-4bde-923c-3eef72160ba1" class="">
+</p><p id="58655dd0-d744-4cde-ab1a-34da3fb52f45" class="">물리적 보안<br/>데이터 센터 접근에 대한 광범위한 보호 계층<br/>• 액세스 요청 및 승인<br/>• 시설의 경계: 높은 울타리와 카메라 및 모니터링 시스템<br/>• 건물 입구: 엄격한 훈련 및 신원조사를 거친 보안 책임자의 순찰<br/>• 건물 내부: 생체인식 방법을 통한 2단계 인증을 통과해야 함<br/>• 데이터 센터: 출입이 승인된 층만 출입할 수 있음. 전신 금속 탐지기 통과<br/></p><p id="a5ad2ea8-9e02-4d1d-8f38-edf5a342a9de" class="">
+</p><p id="ff24635e-3263-4fa6-98e8-74e5202da182" class="">정책 및 액세스: Azure 거버넌스 수립<br/>거버넌스: 운영 정책<br/></p><p id="c41cd1f7-0606-4a23-8d17-edeb0134dd84" class="">SLA ( Service Level Agreement )<br/>서비스 제공 기업이 이용자에게 제공하는 서비스의 수준을 정량화 등을 통해 명확하게 제시하고,<br/>이에 미달하는 경우 손해를 배상하도록 하여 서비스의 품질을 보장하기 위한 약정<br/></p><p id="d0eb52f5-13e5-497c-b564-ae29ee1d01f9" class="">Resource Management Groups 계층 구조</p><p id="9e3b39a4-b580-499a-8cab-df00ddc102b4" class="">
+</p><p id="75a80231-115b-4988-9345-fa52a156f68d" class="">
+</p><p id="ad527ccf-3ae1-4fbc-b9c2-4ca717dad483" class=""><strong>비용 최적화<br/><br/></strong>예산 내에서 지출을 유지하기 위해 조직, 아키텍처 및 전술적 수준에서 최적화 사고 방식을 채택합니다.</p><ul id="3667875a-056c-4de2-989b-66cc41b3cdf7" class="bulleted-list"><li style="list-style-type:disc">클라우드는 On-Demand 형식의 요금 청구 모델<br/>• 비용 제약 조건 내에서 유지: 가격 계산기를 이용해 예산과 비용 계산<br/>• 확장성 있는 비용 목표: 클라우드의 동적 크기 조정 기능 활용<br/>• 올바른 리소스와 크기: 무료 리소스 제공 활용<br/>• 모니터링 및 최적화: Advisor 점수 활용<br/></li></ul><p id="82555ae1-fd38-4a1e-9f71-00272b9a1ea8" class=""><br/><br/><strong>운영 우수성<br/><br/></strong>전체적인 관찰 가능성 및 자동화된 시스템을 구축하여 프로덕션의 문제를 줄입니다.<br/>DevOps<br/>• CI/CD<br/>• 아키텍처 자동화<br/>• 모니터링 및 분석 기능<br/>• 테스트<br/></p><p id="cffa90aa-fc78-4f4c-ab7f-09f4c3a39f85" class=""><br/><br/><strong>성능 효율성<br/><br/></strong>프로덕션에 배포하기 전에 수평 크기 조정 및 테스트 변경을 통해 워크로드에 대한 요구 사항의 변화에 맞게 조정합니다.<br/><br/></p><ul id="da6b8288-74f1-4d3a-bfe5-50cb2829b8e4" class="bulleted-list"><li style="list-style-type:disc">강화 및 확장<br/>• 네트워크 최적화: 메시징 계층 (REST API, 비동기 메시징 패턴)<br/>• 스토리지 성능 최적화: 파티션 분할, 캐시<br/></li></ul><p id="a0074233-04b7-479c-bad8-6e579ed8573f" class="">
+</p><p id="a51aa7e3-3e9f-46d1-a93c-fe10044ad81c" class="">
+</p><h2 id="e638a285-a55c-4fd2-b220-33da3935b527" class=""><strong>Azure 애플리케이션을 위한 10가지 설계 원칙</strong></h2><p id="3282404c-09a1-4e33-a930-873d91b8f728" class="">
+</p><ul id="ccab9555-6375-4a04-bcf4-9345dc90b290" class="bulleted-list"><li style="list-style-type:disc"><strong><a href="https://learn.microsoft.com/ko-kr/azure/architecture/guide/design-principles/self-healing">자체 복구를 위한 디자인</a></strong> . 분산 시스템에서는 오류가 발생합니다. 오류가 발생하면 자체 복구되도록 애플리케이션을 디자인하십시오.</li></ul><ul id="8dc0ed2a-4b39-4f5f-8a57-6879e084ac0c" class="bulleted-list"><li style="list-style-type:disc"><strong><a href="https://learn.microsoft.com/ko-kr/azure/architecture/guide/design-principles/redundancy">모두 중복으로 구성</a></strong> . 단일 실패 지점을 피하도록 애플리케이션에 중복성을 구축합니다.</li></ul><ul id="1513da43-497d-4050-9493-45b9ef52ea97" class="bulleted-list"><li style="list-style-type:disc"><strong><a href="https://learn.microsoft.com/ko-kr/azure/architecture/guide/design-principles/minimize-coordination">조정 최소화</a></strong> . 확장성을 위해 애플리케이션 서비스 간의 조정을 최소화합니다.</li></ul><ul id="aa38e4c5-da87-456f-808b-ac1c3579e451" class="bulleted-list"><li style="list-style-type:disc"><strong><a href="https://learn.microsoft.com/ko-kr/azure/architecture/guide/design-principles/scale-out">규모 확장을 위한 디자인</a></strong> . 수요에 따라 새 인스턴스를 추가하거나 제거하여 규모 확장이 가능하도록 애플리케이션을 디자인합니다.</li></ul><ul id="66c0b1af-0d90-4fed-ab21-967d31880036" class="bulleted-list"><li style="list-style-type:disc"><strong><a href="https://learn.microsoft.com/ko-kr/azure/architecture/guide/design-principles/partition">한도에 맞춘 분할</a></strong> . 분할을 사용하여 데이터베이스, 네트워크 및 컴퓨팅 한도를 해결합니다.</li></ul><ul id="ab55f489-ba84-424b-b65a-16515f331339" class="bulleted-list"><li style="list-style-type:disc"><strong><a href="https://learn.microsoft.com/ko-kr/azure/architecture/guide/design-principles/design-for-operations">운영을 위한 디자인</a></strong> . 운영 팀에 필요한 도구가 포함되도록 애플리케이션을 디자인합니다.</li></ul><ul id="548e4308-f354-48b8-9f66-ef24c2ff9516" class="bulleted-list"><li style="list-style-type:disc"><strong><a href="https://learn.microsoft.com/ko-kr/azure/architecture/guide/design-principles/managed-services">관리되는 서비스 사용</a></strong> . 가능하면 IaaS(Infrastructure as a Service)보다 PaaS(Platform as a Service)를 사용합니다.</li></ul><ul id="41efcf95-24ef-4ae0-89fe-a2941c8ae750" class="bulleted-list"><li style="list-style-type:disc"><strong><a href="https://learn.microsoft.com/ko-kr/azure/architecture/guide/design-principles/identity">ID 서비스 사용</a></strong> 사용자 고유의 ID를 빌드하거나 운영하는 대신 IDaaS(Identity as a Service) 플랫폼을 사용합니다.</li></ul><ul id="f70c4cd1-ea5a-4564-96e4-82266ab22fec" class="bulleted-list"><li style="list-style-type:disc"><strong><a href="https://learn.microsoft.com/ko-kr/azure/architecture/guide/design-principles/design-for-evolution">진화를 위한 디자인</a></strong> . 모든 성공적인 애플리케이션은 시간에 따라 변화합니다. 혁신적인 디자인은 지속적인 혁신의 핵심입니다.</li></ul><ul id="e59daa47-5860-4612-9e38-1e6d7e387c70" class="bulleted-list"><li style="list-style-type:disc"><strong><a href="https://learn.microsoft.com/ko-kr/azure/architecture/guide/design-principles/build-for-business">비즈니스 요구 사항에 맞게 구축</a></strong> . 모든 디자인 결정은 비즈니스 요구 사항에 맞춰 정당화되어야 합니다.</li></ul><p id="e0822979-faee-4133-b723-144cdf56e9cc" class="">
+</p><h1 id="13f784fd-2fe1-414f-b87e-2f878d8c1d15" class="">Azure 기술아키텍처 가이드</h1><h3 id="861d8eb9-4a09-4892-ac96-5e34be988989" class=""><strong>ㅇ Azure관련 기술아키텍처 가이드</strong></h3><p id="1d89aa39-a742-4762-b6f5-d4bbc80a1a1d" class=""><strong>  - TA표준을 기본으로 최신버전의 SW 위주로 적용, Azure내 PaaS 활용, EOS된 OS/DB/MW는 사용 제한</strong></p><p id="8f9aebe7-2364-43c5-997d-435a9860499c" class="">. 시스템은 모두 Azure 랜딩존 수용(랜딩존 구축 일정 : ~8월)</p><p id="c928f42d-7c28-4d2e-bed1-5e9e8204f02b" class=""><strong>- 기준 OS</strong></p><p id="ed34a4a5-a8b1-44cb-b093-724e6b839383" class="">. Linux : 권장 Rocky/RHEL 8.9 or 8.10, 사용제한 CentOS/RHEL 7버전 이하</p><p id="7804e282-6864-4539-8449-62a0fb6f17bd" class="">. Windows : 2019 권장, 사용제한 2012 이하</p><p id="e38feaec-911f-47fb-93d5-1fdb91684ba8" class=""><strong>- DBMS : PaaS 우선 적용(PostgreSQL, MySQL, Redis, MS SQL), 필요 시 Iaas 내 VM 설치형 구성 가능</strong></p><p id="608b9e9d-07b4-4f97-825a-772578fef764" class="">. PostgreSQL의 경우 Azure Database for PostgreSQL 15버전 우선검토, MySQL Azure Database for MySQL 00버전(Community 호환), Redis는 00버전 권장</p><p id="51586609-40df-4e89-96a1-da0bce87f6e6" class="">. MariaDB는 PaaS 미제공(25년 사용 중단), IaaS VM 설치형 또는 MySQL 전환</p><p id="c9ebcc64-25fd-455a-8066-9dafe3164aca" class="">. COSMOS(PostgreSQL, MongoDB, NoSQL, Apache Cassandra)는 제한하되, 필요 요건 시 별도 검토</p><p id="a75c968b-27fb-45ca-80f1-a311c49d0f6d" class="">. IaaS 설치형은 필요시 구성가능(HA구성 방안에 대해서 기술 검토 미완료 상태)</p><p id="4f74e48e-3423-42b5-b738-059dbe1b64b1" class=""><strong> - MW 및 기타사항</strong></p><p id="f1f28cee-c865-483d-80d6-2709b8b7e2ee" class="">. MW : 최신버전 사용(IaC기반 자동설치 개발중, ~8월 예정)</p><p id="de4946c2-f5b3-4db1-8e36-a7bc996e3cbb" class="">. Java : Open JDK 17 권장(RHEL 8.0 기준으로 OpenJDK 8(1.8)은 Support 포함, 7(1.7)이하는 Support 미포함(세부 기술검토는 미완료)</p><p id="ba3d1cf5-a01b-40b0-b19e-b11875f141f7" class="">. 컨테이너는 FlyingCube--&gt;AKS PaaS, Kafka는 Azure Event Hubs 검토</p><p id="3415d487-db36-43ed-8af5-23832679667e" class="">추가 질문을 더 보내봅니다.</p><p id="8575ad12-8d2d-4dfc-a8f9-c0acfacaf5b1" class="">
+</p><p id="c6f8aecb-714c-4a9b-aa70-bcd5187abd15" class="">
+</p><p id="d1ffafab-cb4f-4214-ab70-396418756ab2" class="">
+</p><figure id="feb6ae9f-0eb5-4ab3-92b8-8bc9bafa23ed" class="image"><img style="width:1231px" src="https://prod-files-secure.s3.us-west-2.amazonaws.com/17cfd903-58a8-4aef-99cd-47359ba99e46/df235086-c3ab-4b82-8fb0-88a1be69b033/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Credential=AKIAT73L2G45HZZMZUHI%2F20240812%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Date=20240812T202811Z&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=c17be1aec7962ad7c8ba66029d3c32673292413bc28ec5625a337b73510dd0f2&amp;X-Amz-SignedHeaders=host&amp;x-id=GetObject"/></figure><p id="6872f2b7-83c3-4317-8579-4249f3b2f4d9" class="">
+</p><p id="c1e82d3e-79f7-4df2-9617-80dd24eacca8" class="">
+</p><figure id="6e616743-6b4b-4c90-92b1-173900ea7621" class="image"><img style="width:1195px" src="https://prod-files-secure.s3.us-west-2.amazonaws.com/17cfd903-58a8-4aef-99cd-47359ba99e46/af115613-6219-4667-b3ac-36376eafc6d8/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Credential=AKIAT73L2G45HZZMZUHI%2F20240812%2Fus-west-2%2Fs3%2Faws4_request&amp;X-Amz-Date=20240812T202811Z&amp;X-Amz-Expires=86400&amp;X-Amz-Signature=45963b72ecf5fa7e098dc1e335631e04df00c2246715e7b408927c0310b72316&amp;X-Amz-SignedHeaders=host&amp;x-id=GetObject"/></figure><p id="1dbf0a8a-4a61-46e3-abe8-01bcc6e8716f" class="">
+</p><p id="3fcfec16-f0b3-458d-ab91-bf5930475d8b" class="">
+</p><p id="f55f52ba-4349-47f6-8b22-2d93b23de047" class="">
+</p></div></article></body></html>
